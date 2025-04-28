@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -32,7 +31,7 @@ const Index = () => {
   const { toast } = useToast();
   const [url, setUrl] = useState('');
   const [isRunning, setIsRunning] = useState(false);
-  const [clickRate, setClickRate] = useState(60); // clicks per minute
+  const [clickRate, setClickRate] = useState(200); // Changed default to 200
   const [totalClicks, setTotalClicks] = useState(0);
   const [sessionTime, setSessionTime] = useState(0);
   const [errorCount, setErrorCount] = useState(0);
@@ -43,10 +42,8 @@ const Index = () => {
   const [useAgentRotation, setUseAgentRotation] = useState(true);
   const intervalRef = useRef<number | null>(null);
   
-  // URL validation
   const isUrlValid = url ? isValidUrl(url) : false;
   
-  // Start or stop the traffic simulation
   const toggleSimulation = () => {
     if (isRunning) {
       stopSimulation();
@@ -55,7 +52,6 @@ const Index = () => {
     }
   };
   
-  // Start the simulation
   const startSimulation = () => {
     if (!isUrlValid) {
       toast({
@@ -72,21 +68,17 @@ const Index = () => {
       description: `Traffic simulator is now running for ${url}`,
     });
     
-    // Calculate interval based on click rate
     const clickIntervalMs = 60000 / clickRate;
     
-    // Start the interval for simulation
     intervalRef.current = window.setInterval(() => {
       setTotalClicks(prev => prev + 1);
       setSessionTime(prev => prev + (clickIntervalMs / 1000));
       
-      // Generate new IP and add to history
       const newIP = generateRandomIP();
       setCurrentIP(newIP);
       setIpHistory(prev => [newIP, ...prev].slice(0, 100));
       
-      // Simulate success/failure
-      const isSuccess = Math.random() > 0.05; // 5% error rate for simulation
+      const isSuccess = Math.random() > 0.05;
       if (isSuccess) {
         setSuccessCount(prev => prev + 1);
       } else {
@@ -95,7 +87,6 @@ const Index = () => {
     }, clickIntervalMs);
   };
   
-  // Stop the simulation
   const stopSimulation = () => {
     if (intervalRef.current) {
       clearInterval(intervalRef.current);
@@ -108,7 +99,6 @@ const Index = () => {
     });
   };
   
-  // Reset all statistics
   const resetStats = () => {
     setTotalClicks(0);
     setSessionTime(0);
@@ -121,7 +111,6 @@ const Index = () => {
     });
   };
   
-  // Clean up interval on unmount
   useEffect(() => {
     return () => {
       if (intervalRef.current) {
@@ -130,7 +119,6 @@ const Index = () => {
     };
   }, []);
   
-  // Format session time
   const formatTime = (seconds: number) => {
     const hrs = Math.floor(seconds / 3600);
     const mins = Math.floor((seconds % 3600) / 60);
@@ -142,7 +130,6 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-slate-900 text-white p-4 sm:p-6">
       <div className="max-w-7xl mx-auto">
-        {/* Header */}
         <header className="mb-8 text-center">
           <h1 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
             Web Traffic Simulator
@@ -152,9 +139,7 @@ const Index = () => {
           </p>
         </header>
         
-        {/* Main Content */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Control Panel */}
           <div className="lg:col-span-1">
             <Card className="bg-slate-800 border-slate-700">
               <CardHeader>
@@ -189,7 +174,7 @@ const Index = () => {
                     <Label>Click Rate: {clickRate} per minute</Label>
                   </div>
                   <Slider 
-                    defaultValue={[clickRate]} 
+                    defaultValue={[200]} 
                     min={10}
                     max={200}
                     step={10}
@@ -249,7 +234,6 @@ const Index = () => {
               </CardFooter>
             </Card>
             
-            {/* Current Status */}
             <Card className="bg-slate-800 border-slate-700 mt-6">
               <CardHeader className="pb-2">
                 <CardTitle className="text-lg">Current Status</CardTitle>
@@ -287,7 +271,6 @@ const Index = () => {
             </Card>
           </div>
           
-          {/* Visualization and Details Area */}
           <div className="lg:col-span-2 space-y-6">
             <Card className="bg-slate-800 border-slate-700">
               <CardHeader>
@@ -337,7 +320,6 @@ const Index = () => {
               </TabsContent>
             </Tabs>
             
-            {/* Warning notice */}
             <div className="bg-amber-900/40 border border-amber-800/60 rounded-md p-4 text-amber-200">
               <div className="flex items-start">
                 <AlertTriangle className="mr-2 mt-1 flex-shrink-0" size={20} />
