@@ -22,3 +22,8 @@ export interface SimulationStats {
   endTime?: number;
   clickRate: number;
 }
+
+export interface ProgressProps extends React.ComponentPropsWithoutRef<"div"> {
+  value: number;
+  indicator?: string;
+}

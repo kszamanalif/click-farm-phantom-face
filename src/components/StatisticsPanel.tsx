@@ -3,6 +3,7 @@ import React from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import { Progress } from "@/components/ui/progress";
 import { CheckCircle2, XCircle, Clock, Zap } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface StatisticsPanelProps {
   totalClicks: number;
@@ -96,7 +97,12 @@ const StatisticsPanel = ({
             </div>
             <span className="text-sm">{successCount} clicks ({successRate.toFixed(1)}%)</span>
           </div>
-          <Progress value={successRate} className="h-2 bg-slate-700" indicatorClassName="bg-emerald-500" />
+          <Progress 
+            value={successRate} 
+            className="h-2 bg-slate-700" 
+            // Using cn utility to apply custom styles to the indicator
+            indicator={cn("bg-emerald-500")}
+          />
         </div>
         
         <div className="space-y-1">
@@ -107,7 +113,12 @@ const StatisticsPanel = ({
             </div>
             <span className="text-sm">{errorCount} clicks ({errorRate.toFixed(1)}%)</span>
           </div>
-          <Progress value={errorRate} className="h-2 bg-slate-700" indicatorClassName="bg-red-500" />
+          <Progress 
+            value={errorRate} 
+            className="h-2 bg-slate-700" 
+            // Using cn utility to apply custom styles to the indicator
+            indicator={cn("bg-red-500")}
+          />
         </div>
       </div>
       
